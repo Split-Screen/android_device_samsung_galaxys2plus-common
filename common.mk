@@ -1,5 +1,3 @@
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
 COMMON_PATH := device/samsung/galaxys2plus-common
 
 DEVICE_PACKAGE_OVERLAYS += $(COMMON_PATH)/overlay
@@ -13,12 +11,6 @@ TARGET_SCREEN_HEIGHT := 800
 PRODUCT_COPY_FILES += \
 	$(COMMON_PATH)/ramdisk/init.bcm281x5.usb.rc:root/init.bcm281x5.usb.rc \
 	$(COMMON_PATH)/ramdisk/init.log.rc:root/init.log.rc
-
-# File system management tools
-PRODUCT_PACKAGES += \
-	setup_fs \
-	make_ext4fs \
-	e2fsck
 
 # Wi-Fi
 PRODUCT_PACKAGES += \
@@ -91,9 +83,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.brcm.gralloc.force_hdcp=1
 
+# Enable USB OTG interface
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.sys.isUsbOtgEnabled=true
+
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
+
+# Set read only default composition for USB
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.sys.usb.default.config=mtp
 
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -112,7 +112,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
 	brcm.hwc.no-hdmi-trans=1 \
-	debug.hwui.render_dirty_regions=false \
 	ro.opengles.version=131072 \
 	ro.zygote.disable_gl_preload=1
 
